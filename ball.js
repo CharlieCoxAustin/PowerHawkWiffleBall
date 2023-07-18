@@ -12,7 +12,7 @@ class Ball
     leftBool;
     forwardBool;
 
-    constructor(xVal, yVal, zVal, widthVal, heightVal, pictureVal)
+    constructor(xVal, yVal, zVal, widthVal, heightVal, xVel, yVel, zVel, pictureVal)
     {
         this.x = xVal;
         this.y = yVal;
@@ -21,9 +21,9 @@ class Ball
         this.height = heightVal;
         this.picture = new Image();
         this.picture.src = pictureVal;
-        this.xVelocity = -3;
-        this.yVelocity = -3;
-        this.zVelocity = 10;
+        this.xVelocity = xVel;
+        this.yVelocity = yVel;
+        this.zVelocity = zVel;
         this.shadow = new Image();
         this.shadow.src = "ballShadow-01.png"
         if(this.xVelocity <= 0) //this will be to help stop the ball drifting after it lands.
