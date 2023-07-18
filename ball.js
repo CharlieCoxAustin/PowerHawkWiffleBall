@@ -21,9 +21,9 @@ class Ball
         this.height = heightVal;
         this.picture = new Image();
         this.picture.src = pictureVal;
-        this.xVelocity = -7;
-        this.yVelocity = -10;
-        this.zVelocity = 5;
+        this.xVelocity = -3;
+        this.yVelocity = -3;
+        this.zVelocity = 10;
         this.shadow = new Image();
         this.shadow.src = "ballShadow-01.png"
         if(this.xVelocity <= 0) //this will be to help stop the ball drifting after it lands.
@@ -75,7 +75,7 @@ class Ball
         {
             if(this.z > 0)
             {
-               this.xVelocity += .1;
+               this.xVelocity += .05;
             }
             else if(this.z <= 0)
             {
@@ -90,7 +90,7 @@ class Ball
         {
             if(this.z > 0)
             {
-               this.xVelocity -= .1;
+               this.xVelocity -= .05;
             }
             else if(this.z <= 0)
             {
@@ -110,7 +110,7 @@ class Ball
         {
             if(this.z > 0)
             {
-               this.yVelocity += .1;
+               this.yVelocity += .05;
             }
             else if(this.z <= 0)
             {
@@ -125,7 +125,7 @@ class Ball
         {
             if(this.z > 0)
             {
-               this.yVelocity -= .1;
+               this.yVelocity -= .05;
             }
             else if(this.z <= 0)
             {
