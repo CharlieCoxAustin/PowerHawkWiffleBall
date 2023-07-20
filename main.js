@@ -15,10 +15,10 @@ theBaseManager.addBase(new Base(525, 505, 55, 55, "base-01.png"));
 theBaseManager.addBase(new Base(950, 745, 55, 55, "homePlate-01.png"));
 theFielderArray = new FielderFactory();
 theField = new Field(0, 0, canvas.width, canvas.height, "grassBaseballField-01.png");
-theBall = new Ball(850, 650, 3, 30, 30, Math.random() * -8, -7, 7, "wiffleBall-01.png");
+theBall = new Ball(850, 650, 3, 30, 30, Math.random() * 8, -7, 7, "wiffleBall-01.png");
 theFielderArray.addFielder(new Fielder(850, 250, 125, 125, theBall, theBaseManager, "charlieSpriteSheet-01.png"));
 theFielderArray.addFielder(new Fielder(1150, 250, 125, 125, theBall, theBaseManager, "rocketSpriteSheet-01.png"));
-theFielderArray.addFielder(new Fielder(1450, 250, 125, 125, theBall, theBaseManager, "joeSpriteSheet-01.png"));
+theFielderArray.addFielder(new FirstBasemen(theBaseManager.baseArray[0].x - 150, theBaseManager.baseArray[0].y - 100, 125, 125, theBall, theBaseManager, "joeSpriteSheet-01.png"));
 baseRunner = new BaseRunner(950, 650, 125, 125, theBaseManager, "joeSpriteSheet-01.png");
 
 
@@ -33,6 +33,7 @@ function gameLoop()
     baseRunner.executeMoves();
     theBall.executeMoves();
     theFielderArray.executeMoves();
+    //theFielderArray.runToBase();
     theField.draw();
     theBaseManager.draw();
     theBall.draw();
