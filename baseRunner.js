@@ -239,6 +239,10 @@ class BaseRunner
 
     executeMoves()
     {
+        if(this.base == -1)
+        {
+            this.determine();
+        }
         this.x -= this.xVelocity;
         this.y -= this.yVelocity;
 
