@@ -9,8 +9,7 @@ class Ball
     yVelocity;
     zVelocity;
     shadow;
-    leftBool;
-    forwardBool;
+    inHandBool;
 
     constructor(xVal, yVal, zVal, widthVal, heightVal, xVel, yVel, zVel, pictureVal)
     {
@@ -24,34 +23,19 @@ class Ball
         this.xVelocity = xVel;
         this.yVelocity = yVel;
         this.zVelocity = zVel;
+        this.inHandBool = false;
         this.shadow = new Image();
         this.shadow.src = "ballShadow-01.png"
-        if(this.xVelocity <= 0) //this will be to help stop the ball drifting after it lands.
-        {
-            this.leftBool = true;
-        }
-        else
-        {
-            this.leftBool = false;
-        }
-
-        if(this.yVelocity <= 0)
-        {
-            this.forwardBool = true;
-        }
-        else
-        {
-            this.forwardBool = false;
-        }
-        console.log("leftbool: " + this.leftBool);
-        console.log("forwardbool: " + this.forwardBool);
+        
     }
 
     draw()
     {
-        //c.drawImage(this.picture, this.x, this.y, this.width + (this.z / 3), this.height + (this.z / 3));
-        c.drawImage(this.shadow, this.x, this.y + 10, this.width, this.height);
-        c.drawImage(this.picture, this.x, this.y - this.z, this.width, this.height);
+        if(this.inHandBool == false)
+        {
+            c.drawImage(this.shadow, this.x, this.y + 10, this.width, this.height);
+            c.drawImage(this.picture, this.x, this.y - this.z, this.width, this.height);
+        }
     }
 
     executeMoves()
@@ -59,19 +43,14 @@ class Ball
         this.x += this.xVelocity;
         this.y += this.yVelocity;
         this.z += this.zVelocity;
-
+        console.log(this.z);
         this.passiveMove();
-        console.log('xVelocity = ' + this.xVelocity);
-        console.log('yVelocity = ' + this.yVelocity);
-        console.log('zVelocity = ' + this.zVelocity);
-        console.log('x = ' + this.x);
-        console.log('y = ' + this.y);
-        console.log('z = ' + this.z);
+        
     }
 
     passiveMove()
     {
-        if(this.xVelocity < 0.0 && this.leftBool == true)
+        if(this.xVelocity < 0.0 && this.xVelocity < -1)
         {
             if(this.z > 0)
             {
@@ -82,11 +61,11 @@ class Ball
                 this.xVelocity += .3;
             }
         }
-        else if(this.xVelocity < 0.0 && this.leftBool == false)
+        else if(this.xVelocity < 0.0 && this.xVelocity > -1)
         {
             this.xVelocity = 0;
         }
-        else if(this.xVelocity > 0.0 && this.leftBool == false)
+        else if(this.xVelocity > 0.0)
         {
             if(this.z > 0)
             {
@@ -97,7 +76,7 @@ class Ball
                 this.xVelocity -= .3;
             }
         }
-        else if(this.xVelocity > 0.0 && this.leftBool == true)
+        else if(this.xVelocity > 0.0)
         {
             this.xVelocity = 0;
         }
@@ -105,8 +84,7 @@ class Ball
         {
             this.xVelocity = 0.0;
         }
-
-        if(this.yVelocity < 0 && this.forwardBool == true)
+        if(this.yVelocity < 0 && this.yVelocity < -1)
         {
             if(this.z > 0)
             {
@@ -117,11 +95,11 @@ class Ball
                 this.yVelocity += .3;
             }
         }
-        else if(this.yVelocity < 0 && this.forwardBool == false)
+        else if(this.yVelocity < 0 && this.yVelocity > -1)
         {
             this.yVelocity = 0;
         }
-        else if(this.yVelocity > 0 && this.forwardBool == false)
+        else if(this.yVelocity > 0 && this.yVelocity > 1)
         {
             if(this.z > 0)
             {
@@ -132,7 +110,7 @@ class Ball
                 this.yVelocity -= .3;
             }
         }
-        else if(this.yVelocity > 0 && this.forwardBool == true)
+        else if(this.yVelocity > 0 && this.yVelocity < 1)
         {
             this.yVelocity = 0;
         }
@@ -145,7 +123,7 @@ class Ball
         {
             this.zVelocity -= .3;
         }
-        else if(this.z <= 0  && this.zVelocity < 0) //this is freaking out because z is still 0 at the moment it bounces.
+        else if(this.z <= 0  && this.zVelocity < 0)
         {
             this.zVelocity /= 3;
             this.zVelocity *= -1;
