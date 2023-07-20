@@ -168,6 +168,14 @@ class Fielder extends BaseRunner
             this.theBall.zVelocity += 5;
             this.theBall.inHandBool = false;
             this.holdingBall = false;
+            if(mouseX > this.x) //making sure the ball doesn't get trapped inside the player.
+            {
+                this.theBall.x = this.x + this.width;
+            }
+            else
+            {
+                this.theBall.x = this.x;
+            }
         }
     }
 
