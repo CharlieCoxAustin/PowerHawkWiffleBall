@@ -35,6 +35,8 @@ class Ball
         {
             c.drawImage(this.shadow, this.x, this.y + 10, this.width, this.height);
             c.drawImage(this.picture, this.x, this.y - this.z, this.width, this.height);
+            c.fillStyle = 'red';
+            c.fillRect(this.x + 10, this.y + 7, 15, 15);
         }
     }
 
@@ -43,7 +45,6 @@ class Ball
         this.x += this.xVelocity;
         this.y += this.yVelocity;
         this.z += this.zVelocity;
-        console.log(this.z);
         this.passiveMove();
         
     }

@@ -24,7 +24,7 @@ class Fielder extends BaseRunner
 
     constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, pictureVal)
     {
-        super(xVal, yVal, widthVal, heightVal, baseManagerVal, pictureVal);
+        super(xVal, yVal, widthVal, heightVal, 0, baseManagerVal, pictureVal);
         this.x = xVal;
         this.y = yVal;
         this.width = widthVal;
@@ -159,7 +159,7 @@ class Fielder extends BaseRunner
             let mouseX = x;
             let mouseY = y;
             let xDistance = (this.x + 50) - mouseX;
-            let yDistance = (this.y + 75) - mouseY;
+            let yDistance = (this.y + 115) - mouseY;
             let theta = Math.atan2(yDistance, xDistance);
             let xChange = this.throwPower * Math.cos(theta);
             let yChange = this.throwPower * Math.sin(theta);
@@ -187,7 +187,7 @@ class Fielder extends BaseRunner
         if(this.movingToMouse == true)
         {
             let xDistance = (this.x + 50) - this.mouseX;
-            let yDistance = (this.y + 100) - this.mouseY;
+            let yDistance = (this.y + 115) - this.mouseY;
             if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
             {
                 this.xVelocity = 0;
@@ -202,7 +202,7 @@ class Fielder extends BaseRunner
     pickUpBall()
     {
         let xDistance = (this.x + 50) - this.theBall.x;
-        let yDistance = (this.y + 75) - this.theBall.y;
+        let yDistance = (this.y + 115) - this.theBall.y;
         if(xDistance < 35 && xDistance > -35 && yDistance < 35 && yDistance > -35)
         {
             this.xVelocity = 0;

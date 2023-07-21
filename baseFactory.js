@@ -27,4 +27,23 @@ class BaseFactory
             console.log('printX, i = ' + i + ': ' + this.baseArray[i].x);
         }
     }
+
+    checkForBall()
+    {
+        for(let i = 0; i < this.baseArray.length; ++i)
+        {
+            this.baseArray[i].checkForBall();
+        }
+    }
+
+    /*
+    checkForForce()
+    {
+        
+        for(let i = 0; i < this.baseArray.length; ++i)
+        {
+            this.baseArray[i].checkForForce(i);
+        }
+    }
+    */
 }

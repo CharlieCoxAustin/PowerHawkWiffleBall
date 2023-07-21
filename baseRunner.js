@@ -16,8 +16,13 @@ class BaseRunner
     onBase;
     baseManager;
     basesRun;
+    out;
+    scored;
+    scoredImage;
+    outImage;
+    forceOut;
 
-    constructor(xVal, yVal, widthVal, heightVal, baseManagerVal, pictureVal)
+    constructor(xVal, yVal, widthVal, heightVal, currentBase, baseManagerVal, pictureVal)
     {
         this.x = xVal;
         this.y = yVal;
@@ -27,7 +32,7 @@ class BaseRunner
         this.picture.src = pictureVal;
         this.baseManager = baseManagerVal;
         this.facingRight = true;
-        this.base = -1;
+        this.base = currentBase;
         this.yVelocity = 0;
         this.xVelocity = 0;
         this.spriteFrame = 1;
@@ -35,8 +40,16 @@ class BaseRunner
         this.onBase = false;
         this.shadow = new Image();
         this.shadow.src="ballShadow-01.png";
+        this.scoredImage = new Image();
+        this.scoredImage.src ="scored-01.png";
+        this.outImage = new Image();
+        this.outImage.src = 'out-01.png';
         this.speed = 3;
+        this.forceOut = false;
+        this.out = false;
+        this.scored = false;
         window.addEventListener('click', this.determine.bind(this));
+        
         
 
     }
@@ -99,7 +112,7 @@ class BaseRunner
         }
         else if(this.base == 3)
         {
-
+            this.scored = true;
         }
     }
 
@@ -118,7 +131,14 @@ class BaseRunner
 
         if(this.onBase == true)
         {
-            this.standStillLeft();
+            if(!this.out)
+            {
+                this.standStillLeft();
+            }
+            else
+            {
+                this.standStillRight();
+            }
         }
         else if(this.base == -1)
         {
@@ -138,11 +158,35 @@ class BaseRunner
         }
         else if(this.base == 3)
         {
-            this.runRight();
+            if(!this.out)
+            {
+                this.runRight();
+            }
+            else
+            {
+                this.runLeft();
+            }
         }
         else if(this.base == 4)
         {
-            this.runRight();
+            if(!this.out)
+            {
+                this.runRight();
+            }
+            else if(this.out)
+            {
+                this.runLeft();
+            }
+        }
+
+        if(this.scored == true)
+        {
+            c.drawImage(this.scoredImage, this.x + 25, this.y - 85, this.width - 50, this.height - 25);
+        }
+
+        if(this.out == true)
+        {
+            c.drawImage(this.outImage, this.x + 25, this.y - 85, this.width - 50, this.height - 25);
         }
 
     }
@@ -179,9 +223,8 @@ class BaseRunner
         if(baseNum <= 3)
         {
             
-            let xDistance = (this.x + 50) - (this.baseManager.baseArray[baseNum].x);
-            
-            let yDistance = (this.y + 100) - this.baseManager.baseArray[baseNum].y;
+            let xDistance = (this.x + 50) - (this.baseManager.baseArray[baseNum].x + 20);
+            let yDistance = (this.y + 115) - (this.baseManager.baseArray[baseNum].y + 15);
             let theta = Math.atan2(yDistance, xDistance);
             let movementX = this.speed * Math.cos(theta);
             let movementY = this.speed * Math.sin(theta);
@@ -191,18 +234,25 @@ class BaseRunner
         }
         else
         {
-            let xDistance = (this.x + 50) - 1300;
-            let yDistance = (this.y + 100) - 800;
-            if(xDistance > 10 || xDistance < -10)
+            let xDistance;
+            let yDistance;
+            if(this.scored == true)
             {
+                xDistance = (this.x + 50) - 1300;
+                yDistance = (this.y + 100) - 700;
+            }
+            else if(this.out == true)
+            {
+                xDistance = (this.x + 50) - 300;
+                yDistance = (this.y + 100) - 700;
+            }
                 let theta = Math.atan2(yDistance, xDistance);
                 let movementX = this.speed * Math.cos(theta);
                 let movementY = this.speed * Math.sin(theta);
                 this.xVelocity = movementX;
                 this.yVelocity = movementY;
                 this.onBase = false;
-            }
-            else
+            if(xDistance < 15 && xDistance > -15)
             {
                 this.onBase = true;
                 this.xVelocity = 0;
@@ -245,8 +295,9 @@ class BaseRunner
         }
         this.x -= this.xVelocity;
         this.y -= this.yVelocity;
-
+        
         this.checkIfOnBase();
+        this.checkIfOut();
     }
 
     runRight()
@@ -341,6 +392,74 @@ class BaseRunner
     {
         c.drawImage(this.shadow, this.x + 25, this.y + 85, this.width - 50, this.height - 25);
         c.drawImage(this.picture,  0, 299, 298, 225, this.x, this.y, this.width, this.height);
+        c.fillStyle = 'black';
+        c.fillRect(this.x + 50, this.y + 115, 15, 15);
+    }
+
+    standStillRight()
+    {
+        c.drawImage(this.shadow, this.x + 25, this.y + 85, this.width - 50, this.height - 25);
+        c.drawImage(this.picture,  0, 0, 298, 225, this.x, this.y, this.width, this.height);
+    }
+
+    checkIfOut()
+    {
+        //the runner is headed to a base. If the base has a player on it, and that player has the ball, AND there's a force out at that base, then the runner is out.
+        //how do we check if the base we're headed to has a player on it? How do we access the base?
+        //Answer: We know what base we're headed to based on the players 'this.base' attribute. We're going to not worry about force out right now, and make it so that,
+        //if a player is on the base where we're headed and that player has the ball, the runner is out. Good news! this.baseManager is part of this object, so we have that data!
+        if(this.out == false)
+        {
+            if(this.base < 3)
+            {
+                if(this.baseManager.baseArray[this.base + 1].ballOnBase == true  && this.forceOut == true)
+                {
+                    this.out = true;
+                    this.base = 4;
+                }
+            }
+        }
+
+        if(this.scored == true || this.out == true)
+        {
+            //make them run to the outside of the 1st base line.
+            this.calculateRunLine(5);
+        }
+    }
+
+    checkForForce(baseRunnerArray)
+    {
+        switch(this.base)
+        {
+            case -1:
+            if(!this.onBase)
+            {
+                this.forceOut = true;
+            }
+            else
+            {
+                this.forceOut = false;
+            }
+            break;
+            case 0:
+            //If there is a runner running to first, or if the runner going to first has already made it there
+            //than this player has a forceOut.
+            for(let i = 0; i < baseRunnerArray.length; ++i)
+            {
+                let runnerCount = 0;
+                if(baseRunnerArray[i].base == -1)
+                {
+                    this.forceOut = true;
+                }
+            }
+            break;
+            
+            default:
+                this.forceOut = false;
+                break;
+        }
+
+        console.log(this.forceOut);
     }
 
 }

@@ -28,15 +28,17 @@ class FielderFactory
         }
     }
 
-    whoClosest(ballX, ballY)
+    whoClosest(ballX, ballY) //THIS IS FINDING THE WRONG THING LOL
     {
         let closestIndex = 0;
         let closestDistance = Number.MAX_SAFE_INTEGER;
         for(let i = 0; i < this.fielderArray.length; ++i)
         {
-            let fielderX = this.fielderArray[i].x;
-            let fielderY = this.fielderArray[i].y;
-            let distance = ((fielderX - ballX) / (fielderY - ballY));
+            let fielderX = this.fielderArray[i].x + 50;
+            let fielderY = this.fielderArray[i].y + 115;
+            let theXValue = (fielderX - ballX) * (fielderX - ballX);
+            let theYValue = (fielderY - ballY) * (fielderY - ballY);
+            let distance = Math.sqrt(theXValue + theYValue);
             if(distance < 0)
             {
                 distance *= -1;
@@ -51,7 +53,7 @@ class FielderFactory
         {
             this.fielderArray[i].closest = false;
         }
-        this.fielderArray[closestIndex].closest = true;   
+        this.fielderArray[closestIndex].closest = true;  
     }
 
     runToBase()
@@ -61,4 +63,5 @@ class FielderFactory
             this.fielderArray[i].runToBase();
         }
     }
+    
 }

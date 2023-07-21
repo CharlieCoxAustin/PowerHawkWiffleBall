@@ -1,4 +1,4 @@
-class FirstBasemen extends Fielder
+class ThirdBaseman extends FirstBasemen
 {
     x;
     y;
@@ -52,8 +52,8 @@ class FirstBasemen extends Fielder
 
     calculateRunLine(baseNum)
     {
-        let xDistance = (this.x + 50) - (this.baseManager.baseArray[0].x);    
-        let yDistance = (this.y + 100) - this.baseManager.baseArray[0].y;
+        let xDistance = (this.x + 50) - (this.baseManager.baseArray[2].x);    
+        let yDistance = (this.y + 100) - this.baseManager.baseArray[2].y;
         let theta = Math.atan2(yDistance, xDistance);
         let movementX = this.speed * Math.cos(theta);            
         let movementY = this.speed * Math.sin(theta);
@@ -71,8 +71,7 @@ class FirstBasemen extends Fielder
     {   
         if(this.closest == false)
         {
-            this.calculateRunLine(0);
+            this.calculateRunLine(1);
         }
     }
-
 }
