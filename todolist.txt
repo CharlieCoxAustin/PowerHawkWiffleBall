@@ -1,0 +1,14 @@
+Baseball game to do list:
+
+fix force-out issue (current):
+	runner who just got to first gets called out if there is a runner headed to 2nd.
+
+second baseman doesn't always run to second base:
+	sometimes he just sits there and waits.
+
+
+
+
+eventually:
+
+create a screen for pitching/hitting, have that send ball data to fielding view.

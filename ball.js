@@ -10,6 +10,7 @@ class Ball
     zVelocity;
     shadow;
     inHandBool;
+    bounced;
 
     constructor(xVal, yVal, zVal, widthVal, heightVal, xVel, yVel, zVel, pictureVal)
     {
@@ -23,6 +24,7 @@ class Ball
         this.xVelocity = xVel;
         this.yVelocity = yVel;
         this.zVelocity = zVel;
+        this.bounced = false;
         this.inHandBool = false;
         this.shadow = new Image();
         this.shadow.src = "ballShadow-01.png"
@@ -51,6 +53,11 @@ class Ball
 
     passiveMove()
     {
+        if(this.z <= 0)
+        {
+            this.bounced = true;
+        }
+
         if(this.xVelocity < 0.0 && this.xVelocity < -1)
         {
             if(this.z > 0)

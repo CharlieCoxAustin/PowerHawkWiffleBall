@@ -21,10 +21,12 @@ class ThirdBaseman extends FirstBasemen
     mouseX;
     mouseY;
     closest;
+    fielderFactory;
+    baseManager;
 
-    constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, pictureVal)
+    constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, fielderFactoryVal, pictureVal)
     {
-        super(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, pictureVal);
+        super(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, fielderFactoryVal, pictureVal);
         this.x = xVal;
         this.y = yVal;
         this.width = widthVal;
@@ -46,32 +48,17 @@ class ThirdBaseman extends FirstBasemen
         this.theBall = aBall;
         this.movingToMouse = false;
         this.closest = false;
+        this.fielderFactory = fielderFactoryVal;
+        this.baseManager = baseManagerVal;
         window.addEventListener("click", (event) => 
             {this.clickHandler(event.clientX, event.clientY)});
-    }
-
-    calculateRunLine(baseNum)
-    {
-        let xDistance = (this.x + 50) - (this.baseManager.baseArray[2].x);    
-        let yDistance = (this.y + 100) - this.baseManager.baseArray[2].y;
-        let theta = Math.atan2(yDistance, xDistance);
-        let movementX = this.speed * Math.cos(theta);            
-        let movementY = this.speed * Math.sin(theta);
-        this.xVelocity = movementX;
-        this.yVelocity = movementY;
-        if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
-        {
-            this.xVelocity = 0;
-            this.yVelocity = 0;
-            this.onBase = true;
-        }
     }
 
     runToBase()
     {   
         if(this.closest == false)
         {
-            this.calculateRunLine(1);
+            this.calculateRunLine(2);
         }
     }
 }

@@ -62,31 +62,33 @@ class BaseRunner
 
         if(this.base == -1)
         {
-            
-            let nextBase = this.base + 1;
-            let xDistance = (this.x + 50) - this.baseManager.baseArray[nextBase].x;
-            let yDistance = (this.y + 100) - this.baseManager.baseArray[nextBase].y;
+            let xDistance = (this.x + 50) - this.baseManager.baseArray[0].x;
+            let yDistance = (this.y + 100) - this.baseManager.baseArray[0].y;
             
             if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
             {   
                 if(this.onBase == false) //if he's within the box and HASN'T been marked as on base, he will be.
                 {
+                    this.forceOut = false;
                     this.base++;
                     this.onBase = true;
+                    this.baseManager.baseArray[this.base].baseRunnerQueue.push(this);
                     this.xVelocity = 0;
                     this.yVelocity = 0;
                 }
             }
         }
-        else if(this.base >= 0 && this.base < 3) //here have it check the base in front AND behind the runner.
+        else if(this.base >= 0 && this.base < 3) //1st base has no base behind it.
+        //Here have it check the base in front AND behind the runner. currently only checking in front and then 2 bases in front.
         {
             let xDistance = (this.x + 50) - this.baseManager.baseArray[this.base].x;
             let yDistance = (this.y + 100) - this.baseManager.baseArray[this.base].y;
             let nextXDistance = (this.x + 50) - this.baseManager.baseArray[this.base + 1].x;
             let nextYDistance = (this.y + 100) - this.baseManager.baseArray[this.base + 1].y;
             
-            if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
+            if(xDistance <= 15 && xDistance >= -15 && yDistance <= 15 && yDistance >= -15)
             {   
+                
                 if(this.onBase == false) //if he's within the box and HASN'T been marked as on base, he will be.
                 {
                     this.base++;
@@ -97,12 +99,14 @@ class BaseRunner
             }
             else if(nextXDistance < 15 && nextXDistance > -15 && nextYDistance < 15 && nextYDistance > -15)
             {
+                
                 if(this.onBase == false)
                 {
                     this.base++;
                     this.onBase = true;
                     this.xVelocity = 0;
                     this.yVelocity = 0;
+                    this.forceOut = false;
                 }
             }
             else
@@ -298,6 +302,7 @@ class BaseRunner
         
         this.checkIfOnBase();
         this.checkIfOut();
+        
     }
 
     runRight()
@@ -427,39 +432,116 @@ class BaseRunner
         }
     }
 
-    checkForForce(baseRunnerArray)
+    checkForForce(baseRunnerArray, j)
     {
+        //the logic for this is really bonkers. I'll try to add comments to explain what is happenin'.
         switch(this.base)
         {
             case -1:
-            if(!this.onBase)
+            if(!this.onBase) //if you're otw to first after batting and are not on base, force is in effect.
             {
                 this.forceOut = true;
+                
             }
-            else
+            else //if you get to first base, force is no longer in effect.
             {
                 this.forceOut = false;
             }
             break;
             case 0:
-            //If there is a runner running to first, or if the runner going to first has already made it there
-            //than this player has a forceOut.
             for(let i = 0; i < baseRunnerArray.length; ++i)
             {
-                let runnerCount = 0;
-                if(baseRunnerArray[i].base == -1)
+                if(i != j)
                 {
-                    this.forceOut = true;
+                    if(baseRunnerArray[i].base == -1) //runner started on first and now a new runner(the batter) is headed to first
+                    {
+                        this.forceOut = true;
+                        return;
+                    }
+                    else if(baseRunnerArray[i].base == 0) //there's a runner on first who isn't you, i.e. the batter. this uses a queue to only call give the first runner a force
+                    {
+                        let size = this.baseManager.baseArray[0].baseRunnerQueue.length;
+                        if(size == 2)
+                        {
+                            this.forceOut = false;
+                            this.baseManager.baseArray[0].baseRunnerQueue[0].forceOut = true;
+                            this.baseManager.baseArray[0].baseRunnerQueue.shift();
+                              
+                        }
+                        return; 
+                    }
+                    else //there is neither a runner headed to first nor on first. this will happen if the batter is thrown out at first BEFORE the runner otw to 2 is thrown out.
+                    {
+                        this.forceOut = false; //this is messing it up
+                    }
                 }
             }
             break;
-            
-            default:
-                this.forceOut = false;
+            case 1:
+                for(let i = 0; i < baseRunnerArray.length; ++i) //runner is on 2nd headed to 3rd. if force exists for runner behind them, force is in effect.
+                {
+                    if(baseRunnerArray[i].base == 0 && baseRunnerArray[i].forceOut == true)
+                    {
+                        this.forceOut = true;
+                        break;
+                    }
+                    else
+                    {
+                        this.forceOut = false;
+                    }
+                    
+                } 
+                break;
+            case 2:
+                for(let i = 0; i < baseRunnerArray.length; ++i) //runner is on 3rd headed to home. if force exists for runner behind them, force is in effect.
+                {
+                    if(baseRunnerArray[i].base == 1 && baseRunnerArray[i].forceOut == true)
+                    {
+                        this.forceOut = true;
+                        break;
+                    }
+                    else
+                    {
+                        this.forceOut = false;
+                    }
+                    
+                }
+                break;
+            case 3:
+                break;
+            case 4:
                 break;
         }
+    }
 
-        console.log(this.forceOut);
+    checkForTag(fielderArray)
+    {
+        for(let i = 0; i < fielderArray.length; ++i)
+        {
+            let xDistance = (this.x + 50) - (fielderArray[i].x + 50)
+            let yDistance = (this.y + 115) - (fielderArray[i].y + 115)
+            if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
+            {
+                if(fielderArray[i].holdingBall && !this.onBase)
+                {
+                    this.out = true;
+                    this.base = 4;
+                }
+            }
+        }
+    }
+
+    checkForFlyOut(theBall)
+    {
+        //if the ball is in someone's hand and it hasn't bounced yet, the runner who's base is -1 is out.
+        if(theBall.inHandBool && !theBall.bounced)
+        {
+            if(this.base == -1)
+            {
+                this.out = true;
+                this.base = 4;
+            }
+        }
     }
 
 }

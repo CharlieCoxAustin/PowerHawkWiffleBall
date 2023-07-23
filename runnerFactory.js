@@ -32,8 +32,27 @@ class RunnerFactory
     {
         for(let i = 0; i < this.runnerArray.length; ++i)
         {
-            console.log(i);
-            this.runnerArray[i].checkForForce(this.runnerArray);
+            
+            this.runnerArray[i].checkForForce(this.runnerArray, i);
+            //console.log(i + ' forceOut: ' + this.runnerArray[i].forceOut)
+        }
+    }
+
+    checkForTag(fielderArray)
+    {
+        for(let i = 0; i < this.runnerArray.length; ++i)
+        {
+            
+            this.runnerArray[i].checkForTag(fielderArray);
+        }
+    }
+
+    checkForFlyOut(theBall)
+    {
+        for(let i = 0; i < this.runnerArray.length; ++i)
+        {
+            
+            this.runnerArray[i].checkForFlyOut(theBall);
         }
     }
 }
