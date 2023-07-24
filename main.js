@@ -16,7 +16,7 @@ theBaseManager.addBase(new Base(945, 410, 55, 55, theFielderArray, theRunnerFact
 theBaseManager.addBase(new Base(525, 505, 55, 55, theFielderArray, theRunnerFactory, "base-01.png"));
 theBaseManager.addBase(new Base(950, 745, 55, 55, theFielderArray, theRunnerFactory, "homePlate-01.png"));
 theField = new Field(0, 0, canvas.width, canvas.height, "grassBaseballField-01.png");
-theBall = new Ball(850, 650, 3, 30, 30, 5, -5, 9, "wiffleBall-01.png");
+theBall = new Ball(850, 650, 3, 30, 30, 7, -11, 5, "wiffleBall-01.png");
 theFielderArray.addFielder(new SecondBaseman(theBaseManager.baseArray[1].x + 150,theBaseManager.baseArray[1].y - 100, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
 theFielderArray.addFielder(new ThirdBaseman(theBaseManager.baseArray[2].x + 100, theBaseManager.baseArray[2].y - 150, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
 theFielderArray.addFielder(new Fielder(1350, 150, 125, 125, theBall, theBaseManager, theFielderArray, "rocketSpriteSheet-01.png")); //rightField
@@ -66,5 +66,6 @@ function gameLoop()
     //console.log('3rdbasemen on? ' + theFielderArray.fielderArray[1].onBase);
     //console.log('3rbasemen holding ball?: ' + theFielderArray.fielderArray[1].holdingBall);
     //console.log('3rd base ball on base?' + theBaseManager.baseArray[2].ballOnBase);
+    //console.log('2nd basemen closest?: ' + theFielderArray.fielderArray[0].closest);
 
 }

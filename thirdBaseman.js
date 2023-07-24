@@ -60,5 +60,9 @@ class ThirdBaseman extends FirstBasemen
         {
             this.calculateRunLine(2);
         }
+        else
+        {
+            this.chaseBall();
+        }
     }
 }

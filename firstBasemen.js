@@ -60,6 +60,11 @@ class FirstBasemen extends Fielder
         {
             this.calculateRunLine(0);
         }
+        else
+        {
+            this.chaseBall();
+        }
     }
+    
 
 }

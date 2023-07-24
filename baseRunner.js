@@ -522,7 +522,7 @@ class BaseRunner
             let yDistance = (this.y + 115) - (fielderArray[i].y + 115)
             if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
             {
-                if(fielderArray[i].holdingBall && !this.onBase)
+                if(fielderArray[i].holdingBall && !this.onBase && !this.scored)
                 {
                     this.out = true;
                     this.base = 4;

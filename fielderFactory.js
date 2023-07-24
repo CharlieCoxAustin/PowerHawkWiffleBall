@@ -28,7 +28,7 @@ class FielderFactory
         }
     }
 
-    whoClosest(ballX, ballY) //THIS IS FINDING THE WRONG THING LOL
+    whoClosest(ballX, ballY)
     {
         let closestIndex = 0;
         let closestDistance = Number.MAX_SAFE_INTEGER;
@@ -51,9 +51,13 @@ class FielderFactory
         }
         for(let i = 0; i < this.fielderArray.length; ++i)
         {
-            this.fielderArray[i].closest = false;
+            if(i != closestIndex)
+            {
+                this.fielderArray[i].closest = false;
+            }
         }
-        this.fielderArray[closestIndex].closest = true;  
+        this.fielderArray[closestIndex].closest = true;
+        //console.log('closest fielder: ' + closestIndex);  
     }
 
     runToBase()

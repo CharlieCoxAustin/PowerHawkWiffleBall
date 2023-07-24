@@ -23,6 +23,8 @@ class Fielder extends BaseRunner
     closest;
     fielderFactory;
     baseManager;
+    runningToBase;
+    headedTo;
 
     constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, fielderFactoryVal, pictureVal)
     {
@@ -50,6 +52,8 @@ class Fielder extends BaseRunner
         this.closest = false;
         this.fielderFactory = fielderFactoryVal;
         this.baseManager = baseManagerVal;
+        this.runningToBase = false;
+        this.headedTo = -1;
         window.addEventListener("click", (event) => 
             {this.clickHandler(event.clientX, event.clientY)});
 
@@ -81,7 +85,7 @@ class Fielder extends BaseRunner
                     if(xDistance >= -50 && xDistance <= 50 && yDistance >= -50 && yDistance <= 50)
                     {
                         //console.log('throwing');
-                        this.throw(fielderX, fielderY);
+                        this.throw(fielderX, fielderY + 50);
                         return;
                     }
                 }
@@ -90,15 +94,17 @@ class Fielder extends BaseRunner
             for(let i = 0; i < this.baseManager.baseArray.length; ++i)
             {
                 //console.log('Holding ball in base for loop');
-                let baseX = this.baseManager.baseArray[i].x  + 50;
-                let baseY = this.baseManager.baseArray[i].y + 115;
+                let baseX = this.baseManager.baseArray[i].x  + 20;
+                let baseY = this.baseManager.baseArray[i].y + 15;
                 let xDistance = baseX - mouseX;
                 let yDistance = baseY - mouseY;
                 
                 if(xDistance >= -50 && xDistance <= 50 && yDistance >= -50 && yDistance <= 50)
                     {
-                        console.log('calling crl from clickhandler!!!! AAAAAAAAAAHHHHHHHH! base = ' + i);
+                        console.log('calling crl from clickhandler!!!! AAAAAAAAAAHHHHHHHH! base = ' + i); //this isn't checking multiple times to see if he's on base, so he runs infinitely.
+                        this.runningToBase = true;
                         this.calculateRunLine(i);
+                        this.headedTo = i;
                         return;
                     }
             }
@@ -164,6 +170,7 @@ class Fielder extends BaseRunner
         {
         if(this.theBall.inHandBool == false)
         {
+        
         let xDistance = (this.x + 50) - this.theBall.x;
         let yDistance = (this.y + 75) - this.theBall.y;
         let theta = Math.atan2(yDistance, xDistance);
@@ -175,7 +182,7 @@ class Fielder extends BaseRunner
         {
             this.xVelocity = 0;
             this.yVelocity = 0;
-            if(this.theBall.z <= 5)
+            if(this.theBall.z <= 75)
             {
                 this.theBall.inHandBool = true;
                 this.holdingBall = true;
@@ -184,6 +191,7 @@ class Fielder extends BaseRunner
                 this.theBall.yVelocity = 0;
             }
         }
+        //this.pickUpBall();
         }
         }
         
@@ -194,7 +202,6 @@ class Fielder extends BaseRunner
     {   
         if(this.holdingBall == true)
         {
-            //document.querySelector('canvas');
             let mouseX = x;
             let mouseY = y;
             let xDistance = (this.x + 50) - mouseX;
@@ -216,6 +223,7 @@ class Fielder extends BaseRunner
                 this.theBall.x = this.x;
             }
         }
+        this.fielding = true;
     }
 
     executeMoves()
@@ -234,8 +242,16 @@ class Fielder extends BaseRunner
                 this.movingToMouse = false;
             }
         }
+
+        if(this.runningToBase)
+        {
+            this.calculateRunLine(this.headedTo);
+        }
         
-        this.pickUpBall();
+        if(!this.holdingBall)
+        {
+            this.pickUpBall();
+        }
 
         if(this.holdingBall) //making sure the ball moves with the moving player.
         {
@@ -249,11 +265,12 @@ class Fielder extends BaseRunner
         let xDistance = (this.x + 50) - this.theBall.x;
         let yDistance = (this.y + 115) - this.theBall.y;
         if(xDistance < 35 && xDistance > -35 && yDistance < 35 && yDistance > -35)
-        {
+        {   console.log('in pickUpBall, xDist, yDist, ballZ: ' + xDistance + ', ' + yDistance + ', ' + this.theBall.z);
             this.xVelocity = 0;
             this.yVelocity = 0;
             if(this.theBall.z <= 75)
             {
+                console.log('also here');
                 this.theBall.inHandBool = true;
                 this.holdingBall = true;
                 this.fielding = false;
@@ -272,13 +289,27 @@ class Fielder extends BaseRunner
         let movementY = this.speed * Math.sin(theta);
         this.xVelocity = movementX;
         this.yVelocity = movementY;
-        console.log('crl xdist, ydist: ' + xDistance + ', ' + yDistance);
+        //console.log('crl xdist, ydist: ' + xDistance + ', ' + yDistance);
         if(xDistance < 15 && xDistance > -15 && yDistance < 15 && yDistance > -15)
         {
-            console.log('setting x and y velocities of fielder to 0!!!');
+            //console.log('setting x and y velocities of fielder to 0!!!');
             this.xVelocity = 0;
             this.yVelocity = 0;
             this.onBase = true;
+            this.runningToBase = false;
+        }
+    }
+
+    runToBase() //while this function is mislabeled,(it's actually autofield) it is the same as in the basemen classes, so the name is re-used for simplicity.
+    {
+        if(this.closest)
+        {
+            this.chaseBall();
+        }
+        else
+        {
+            this.xVelocity = 0;
+            this.yVelocity = 0;
         }
     }
 

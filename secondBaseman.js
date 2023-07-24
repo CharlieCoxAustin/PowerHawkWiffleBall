@@ -60,5 +60,9 @@ class SecondBaseman extends FirstBasemen
         {
             this.calculateRunLine(1);
         }
+        else
+        {
+            this.chaseBall();
+        }
     }
 }
