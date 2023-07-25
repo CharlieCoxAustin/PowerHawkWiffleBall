@@ -55,4 +55,16 @@ class RunnerFactory
             this.runnerArray[i].checkForFlyOut(theBall);
         }
     }
+
+    clearPlayers()
+    {
+        for(let i = 0; i < this.runnerArray.length; ++i)
+        {
+            if(this.runnerArray[i].out || this.runnerArray[i].scored)
+            {
+                this.runnerArray.splice(i, 1);
+                console.log('deleted player.');
+            }
+        }
+    }
 }

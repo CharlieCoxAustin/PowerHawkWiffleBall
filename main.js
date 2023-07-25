@@ -3,7 +3,7 @@ canvas.width = window.innerWidth - 50;
 canvas.height = window.innerHeight - 50;
 c = canvas.getContext("2d");
 a = new Audio();
-
+hitting = false;
 
 
 
@@ -29,48 +29,41 @@ theFielderArray.addFielder(new Catcher(theBaseManager.baseArray[3].x, theBaseMan
 theRunnerFactory.addRunner(new BaseRunner(950, 650, 125, 125, -1, theBaseManager, "joeSpriteSheet-01.png")); //batter
 theRunnerFactory.addRunner(new BaseRunner(theBaseManager.baseArray[0].x - 45, theBaseManager.baseArray[1].y - 15, 125, 125, -1, theBaseManager, "joeSpriteSheet-01.png")); //runner on first.
 theRunnerFactory.addRunner(new BaseRunner(theBaseManager.baseArray[1].x - 45, theBaseManager.baseArray[1].y - 95, 125, 125, 0, theBaseManager, "joeSpriteSheet-01.png")); //runner on second
+TheHittingScreen = new HittingScreen(0, 0, canvas.width, canvas.height, theBall, "hittingViewField-01.png");
+//How should we make this oscillate between two screens? I think it's a good idea to have a boolean value called hitting, when it is true, the hitting screen is drawn, and 
+//hitting events occur. When a hit occurs, hitting is set to false, where upon the fielding phase occurs.
 
+//hittingLoop();
 gameLoop();
 
-function gameLoop()
+function gameLoop()  //Okay, it now oscillates between screens! Now to set up a way to take all the fielders back to their original positions and maybe spawn a new batter?
 {
     requestAnimationFrame(gameLoop);
     c.clearRect(0,0,innerWidth,innerHeight);
-    //console.log('runner on? ' + theRunnerFactory.runnerArray[1].onBase);
-    //console.log('runner x? ' + theRunnerFactory.runnerArray[1].x);
-    //console.log('runner y? ' + theRunnerFactory.runnerArray[1].y);
-    theFielderArray.whoClosest(theBall.x, theBall.y);
-    theRunnerFactory.checkForForce();
-    theRunnerFactory.executeMoves();
-    theBall.executeMoves();
-    theFielderArray.runToBase();
-    theFielderArray.executeMoves();
-    theBaseManager.checkForBall();
-    theRunnerFactory.checkForTag(theFielderArray.fielderArray);
-    theRunnerFactory.checkForFlyOut(theBall);
-    theField.draw();
-    theBaseManager.draw();
-    theBall.draw();
-    theFielderArray.draw();
-    theRunnerFactory.draw();
-    //console.log('catcher on?: ' + theFielderArray.fielderArray[8].onBase);
-    //console.log('home plate ball on base?: ' + theBaseManager.baseArray[3].ballOnBase);
-    //console.log('ball Z?: ' + theBall.z);
-    //console.log('second baseman on?: ' + theFielderArray.fielderArray[0].onBase);
-    //console.log('batter on?: '+ theRunnerFactory.runnerArray[0].onBase);
-    //console.log('batter base number?: ' + theRunnerFactory.runnerArray[0].base);
-    //console.log('1runner base number?: ' + theRunnerFactory.runnerArray[1].base);
-    //console.log('runner on? ' + theRunnerFactory.runnerArray[1].onBase);
-    //console.log('2ndbasemen on?: ' + theFielderArray.fielderArray[0].onBase);
-    //console.log('2ndbasemen holding ball?: ' + theFielderArray.fielderArray[0].holdingBall);
-    //console.log('2nd base ball on base?' + theBaseManager.baseArray[1].ballOnBase);
-    //console.log('force on batter?: ' + theRunnerFactory.runnerArray[0].forceOut);
-    //console.log('force on 1runner?: ' + theRunnerFactory.runnerArray[1].forceOut);
-    //console.log('force on 2runner?: ' + theRunnerFactory.runnerArray[2].forceOut);
-    //console.log('2runner base number?: ' + theRunnerFactory.runnerArray[2].base);
-    //console.log('3rdbasemen on? ' + theFielderArray.fielderArray[1].onBase);
-    //console.log('3rbasemen holding ball?: ' + theFielderArray.fielderArray[1].holdingBall);
-    //console.log('3rd base ball on base?' + theBaseManager.baseArray[2].ballOnBase);
-    //console.log('2nd basemen closest?: ' + theFielderArray.fielderArray[0].closest);
 
+    if(!hitting)
+    {
+        theFielderArray.whoClosest(theBall.x, theBall.y);
+        theRunnerFactory.checkForForce();
+        theRunnerFactory.executeMoves();
+        theBall.executeMoves();
+        theFielderArray.runToBase();
+        theFielderArray.executeMoves();
+        theBaseManager.checkForBall();
+        theRunnerFactory.checkForTag(theFielderArray.fielderArray);
+        theRunnerFactory.checkForFlyOut(theBall);
+        theFielderArray.fielderArray[3].endPhase(theRunnerFactory.runnerArray);
+        theField.draw();
+        theBaseManager.draw();
+        theBall.draw();
+        theFielderArray.draw();
+        theRunnerFactory.draw();
+    }
+
+    if(hitting) //this method like KIND OF works. Taking a pause to think about it and research. This was a fun idea!
+    {
+        console.log('hitting');
+        theRunnerFactory.clearPlayers();
+        TheHittingScreen.draw();
+    }
 }

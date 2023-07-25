@@ -53,4 +53,21 @@ class Pitcher extends Fielder
         window.addEventListener("click", (event) => 
             {this.clickHandler(event.clientX, event.clientY)});
     }
+
+    endPhase(runnerArray)
+    {
+        if(this.holdingBall == true)
+        {
+            for(let i = 0; i < runnerArray.length; ++i)
+            {
+                if(!runnerArray[i].onBase)
+                {
+                    hitting = false;
+                    return;
+                }
+            }
+            hitting = true;
+            this.holdingBall = false;
+        }
+    }
 }

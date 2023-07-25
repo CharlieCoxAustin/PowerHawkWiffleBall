@@ -36,14 +36,5 @@ class BaseFactory
         }
     }
 
-    /*
-    checkForForce()
-    {
-        
-        for(let i = 0; i < this.baseArray.length; ++i)
-        {
-            this.baseArray[i].checkForForce(i);
-        }
-    }
-    */
+    
 }

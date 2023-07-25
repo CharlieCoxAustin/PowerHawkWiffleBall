@@ -67,6 +67,8 @@ class Fielder extends BaseRunner
 
     clickHandler(mouseX, mouseY)
     {
+    if(!hitting)
+    {
         this.mouseX = mouseX; 
         this.mouseY = mouseY;
         if(this.holdingBall == true)
@@ -129,6 +131,7 @@ class Fielder extends BaseRunner
                 this.chaseMouse(mouseX, mouseY);
             }
         }
+    }
     }
 
     draw()

@@ -217,7 +217,8 @@ class BaseRunner
 
     determine()
     {
-        
+    if(!hitting)
+    {
         switch(this.base)
         {
             case -1:
@@ -239,6 +240,7 @@ class BaseRunner
                 this.runToBase(4);
                 break;
         }
+    }
     }
 
     calculateRunLine(baseNum)
