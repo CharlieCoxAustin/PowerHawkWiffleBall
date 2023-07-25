@@ -84,8 +84,21 @@ class Fielder extends BaseRunner
                     let yDistance = fielderY - mouseY;
                     if(xDistance >= -50 && xDistance <= 50 && yDistance >= -50 && yDistance <= 50)
                     {
-                        //console.log('throwing');
-                        this.throw(fielderX, fielderY + 50);
+                        console.log('xDistance on click: ' + (fielderX - this.x));
+                        console.log('yDistance on click: ' + (fielderY - this.y));
+                        if((((fielderX - this.x) <= 100) && ((fielderX - this.x) >= -100)) && (((fielderY - this.y) <= 150) && ((fielderY - this.y) >= -150)))
+                        {
+                            //DON'T THROW IT. HAND OFF
+                            console.log('Handing not throwing because proximity.');
+                            console.log('xDist: ' + (fielderX - this.x));
+                            this.fielderFactory.fielderArray[i].holdingBall = true;
+                            this.holdingBall = false;
+                        }
+                        else
+                        {
+                            console.log('throwin');
+                            this.throw(fielderX, fielderY + 50);
+                        }
                         return;
                     }
                 }
@@ -101,7 +114,6 @@ class Fielder extends BaseRunner
                 
                 if(xDistance >= -50 && xDistance <= 50 && yDistance >= -50 && yDistance <= 50)
                     {
-                        console.log('calling crl from clickhandler!!!! AAAAAAAAAAHHHHHHHH! base = ' + i); //this isn't checking multiple times to see if he's on base, so he runs infinitely.
                         this.runningToBase = true;
                         this.calculateRunLine(i);
                         this.headedTo = i;
@@ -182,7 +194,7 @@ class Fielder extends BaseRunner
         {
             this.xVelocity = 0;
             this.yVelocity = 0;
-            if(this.theBall.z <= 75)
+            if(this.theBall.z <= 75 && !this.theBall.inHandBool)
             {
                 this.theBall.inHandBool = true;
                 this.holdingBall = true;
@@ -265,12 +277,12 @@ class Fielder extends BaseRunner
         let xDistance = (this.x + 50) - this.theBall.x;
         let yDistance = (this.y + 115) - this.theBall.y;
         if(xDistance < 35 && xDistance > -35 && yDistance < 35 && yDistance > -35)
-        {   console.log('in pickUpBall, xDist, yDist, ballZ: ' + xDistance + ', ' + yDistance + ', ' + this.theBall.z);
+        {   //console.log('in pickUpBall, xDist, yDist, ballZ: ' + xDistance + ', ' + yDistance + ', ' + this.theBall.z);
             this.xVelocity = 0;
             this.yVelocity = 0;
-            if(this.theBall.z <= 75)
+            if(this.theBall.z <= 75 && !this.theBall.inHandBool)
             {
-                console.log('also here');
+                //console.log('also here');
                 this.theBall.inHandBool = true;
                 this.holdingBall = true;
                 this.fielding = false;

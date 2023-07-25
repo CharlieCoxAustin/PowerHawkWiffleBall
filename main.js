@@ -16,13 +16,16 @@ theBaseManager.addBase(new Base(945, 410, 55, 55, theFielderArray, theRunnerFact
 theBaseManager.addBase(new Base(525, 505, 55, 55, theFielderArray, theRunnerFactory, "base-01.png"));
 theBaseManager.addBase(new Base(950, 745, 55, 55, theFielderArray, theRunnerFactory, "homePlate-01.png"));
 theField = new Field(0, 0, canvas.width, canvas.height, "grassBaseballField-01.png");
-theBall = new Ball(850, 650, 3, 30, 30, 7, -11, 5, "wiffleBall-01.png");
+theBall = new Ball(850, 650, 3, 30, 30, -7, -11, 5, "wiffleBall-01.png");
 theFielderArray.addFielder(new SecondBaseman(theBaseManager.baseArray[1].x + 150,theBaseManager.baseArray[1].y - 100, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
+theFielderArray.addFielder(new ShortStop(theBaseManager.baseArray[1].x - 150,theBaseManager.baseArray[1].y - 100, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
 theFielderArray.addFielder(new ThirdBaseman(theBaseManager.baseArray[2].x + 100, theBaseManager.baseArray[2].y - 150, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
+theFielderArray.addFielder(new Pitcher(theBaseManager.baseArray[3].x - 25, theBaseManager.baseArray[0].y - 90, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png")); //pitcher
 theFielderArray.addFielder(new Fielder(1350, 150, 125, 125, theBall, theBaseManager, theFielderArray, "rocketSpriteSheet-01.png")); //rightField
 theFielderArray.addFielder(new Fielder(450, 150, 125, 125, theBall, theBaseManager, theFielderArray, "rocketSpriteSheet-01.png")); //leftField
 theFielderArray.addFielder(new Fielder(850, 50, 125, 125, theBall, theBaseManager, theFielderArray, "rocketSpriteSheet-01.png")); //centerField
 theFielderArray.addFielder(new FirstBasemen(theBaseManager.baseArray[0].x - 150, theBaseManager.baseArray[0].y - 100, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
+theFielderArray.addFielder(new Catcher(theBaseManager.baseArray[3].x, theBaseManager.baseArray[3].y + 25, 125, 125, theBall, theBaseManager, theFielderArray, "charlieSpriteSheet-01.png"));
 theRunnerFactory.addRunner(new BaseRunner(950, 650, 125, 125, -1, theBaseManager, "joeSpriteSheet-01.png")); //batter
 theRunnerFactory.addRunner(new BaseRunner(theBaseManager.baseArray[0].x - 45, theBaseManager.baseArray[1].y - 15, 125, 125, -1, theBaseManager, "joeSpriteSheet-01.png")); //runner on first.
 theRunnerFactory.addRunner(new BaseRunner(theBaseManager.baseArray[1].x - 45, theBaseManager.baseArray[1].y - 95, 125, 125, 0, theBaseManager, "joeSpriteSheet-01.png")); //runner on second
@@ -50,6 +53,8 @@ function gameLoop()
     theBall.draw();
     theFielderArray.draw();
     theRunnerFactory.draw();
+    //console.log('catcher on?: ' + theFielderArray.fielderArray[8].onBase);
+    //console.log('home plate ball on base?: ' + theBaseManager.baseArray[3].ballOnBase);
     //console.log('ball Z?: ' + theBall.z);
     //console.log('second baseman on?: ' + theFielderArray.fielderArray[0].onBase);
     //console.log('batter on?: '+ theRunnerFactory.runnerArray[0].onBase);

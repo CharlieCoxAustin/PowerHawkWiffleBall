@@ -48,7 +48,7 @@ class Ball
         this.y += this.yVelocity;
         this.z += this.zVelocity;
         this.passiveMove();
-        console.log('in the ball, zVelocity and z: ' + this.zVelocity + ', ' + this.z);
+        //console.log('in the ball, zVelocity and z: ' + this.zVelocity + ', ' + this.z);
         
     }
 

@@ -104,19 +104,39 @@ class BaseRunner
                 {
                     this.base++;
                     this.onBase = true;
+                    this.baseManager.baseArray[this.base].baseRunnerQueue.push(this);
                     this.xVelocity = 0;
                     this.yVelocity = 0;
                     this.forceOut = false;
                 }
             }
-            else
+            else //marks on base as false and removes runner from the queue. This may mess up force entirely. Looks like it didn't?
             {
-                this.onBase = false;
+                if(this.onBase)
+                {
+                    this.onBase = false;
+                    let size = this.baseManager.baseArray[this.base].baseRunnerQueue.length;
+                    if(size <= 2 && size > 0)
+                    {
+                        this.baseManager.baseArray[this.base].baseRunnerQueue.shift();
+                    }
+                }
             }
         }
         else if(this.base == 3)
         {
-            this.scored = true;
+            if(!this.baseManager.baseArray[3].ballOnBase)
+            {
+                this.scored = true;
+            }
+            else
+            {
+                if(!this.scored)
+                { 
+                    this.out = true;
+                }
+                this.base = 4;
+            }
         }
     }
 
@@ -428,12 +448,51 @@ class BaseRunner
         if(this.scored == true || this.out == true)
         {
             //make them run to the outside of the 1st base line.
+            if(this.out)
+            {
+                !this.scored;
+            }
+            
             this.calculateRunLine(5);
         }
+
+        
     }
 
     checkForForce(baseRunnerArray, j)
     {
+
+
+        //Since this function already uses most of the same stuff, it seems acceptable to check for two runners on the same base here.
+        //The idea is that if two guys are on the same base at once, the lead runner is out. That's KIND OF how it works in baseball.
+        for(let i = 0; i < baseRunnerArray.length; ++i)
+        {
+            if(baseRunnerArray[i] != this)
+            {
+                if(baseRunnerArray[i].base == this.base && (this.base != 4 && this.base != 3))
+                {
+                    if(baseRunnerArray[i].onBase && this.onBase)
+                    {
+                        let size = this.baseManager.baseArray[this.base].baseRunnerQueue.length;
+                        
+                        if(size == 2)
+                        {
+                            console.log('baseInfo: ' + this.base + ', ' + size);
+                            this.baseManager.baseArray[this.base].baseRunnerQueue[0].out = true;
+                            this.baseManager.baseArray[this.base].baseRunnerQueue[0].base = 4;
+                            this.baseManager.baseArray[this.base].baseRunnerQueue.shift();
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
+
+
+
+        //////////////////////////////this is the end of checking for 2 guys on one base.
+
         //the logic for this is really bonkers. I'll try to add comments to explain what is happenin'.
         switch(this.base)
         {
@@ -512,6 +571,10 @@ class BaseRunner
             case 4:
                 break;
         }
+
+        //Since this function already uses most of the same stuff, it seems acceptable to check for two runners on the same base here.
+        //The idea is that if two guys are on the same base at once, the lead runner is out. That's KIND OF how it works in baseball.
+
     }
 
     checkForTag(fielderArray)
