@@ -25,6 +25,8 @@ class Fielder extends BaseRunner
     baseManager;
     runningToBase;
     headedTo;
+    originalX;
+    originalY;
 
     constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, fielderFactoryVal, pictureVal)
     {
@@ -54,6 +56,8 @@ class Fielder extends BaseRunner
         this.baseManager = baseManagerVal;
         this.runningToBase = false;
         this.headedTo = -1;
+        this.originalX = this.x;
+        this.originalY = this.y;
         window.addEventListener("click", (event) => 
             {this.clickHandler(event.clientX, event.clientY)});
 
@@ -326,6 +330,14 @@ class Fielder extends BaseRunner
             this.xVelocity = 0;
             this.yVelocity = 0;
         }
+    }
+
+    backToOne()
+    {
+        this.x = this.originalX;
+        this.y = this.originalY;
+        this.holdingBall = false;
+        this.fielding = true;
     }
 
 }

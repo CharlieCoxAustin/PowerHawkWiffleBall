@@ -21,6 +21,7 @@ class BaseRunner
     scoredImage;
     outImage;
     forceOut;
+    ranOnStart;
 
     constructor(xVal, yVal, widthVal, heightVal, currentBase, baseManagerVal, pictureVal)
     {
@@ -48,6 +49,7 @@ class BaseRunner
         this.forceOut = false;
         this.out = false;
         this.scored = false;
+        this.ranOnStart = false;
         window.addEventListener('click', this.determine.bind(this));
         
         
@@ -215,6 +217,17 @@ class BaseRunner
 
     }
 
+    runOnStart()
+    {
+        if(!hitting)
+        {
+            if(this.ranOnStart == false)
+            {
+                this.determine();
+            }
+        }
+    }
+
     determine()
     {
     if(!hitting)
@@ -240,6 +253,7 @@ class BaseRunner
                 this.runToBase(4);
                 break;
         }
+        this.ranOnStart = true;
     }
     }
 
@@ -607,6 +621,11 @@ class BaseRunner
                 this.base = 4;
             }
         }
+    }
+
+    reset(newValue)
+    {
+        this.ranOnStart = newValue;
     }
 
 }

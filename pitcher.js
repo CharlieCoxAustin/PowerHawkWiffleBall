@@ -23,6 +23,7 @@ class Pitcher extends Fielder
     closest;
     fielderFactory;
     baseManager;
+    hittingCounter;
 
     constructor(xVal, yVal, widthVal, heightVal, aBall, baseManagerVal, fielderFactoryVal, pictureVal)
     {
@@ -50,6 +51,7 @@ class Pitcher extends Fielder
         this.closest = false;
         this.fielderFactory = fielderFactoryVal;
         this.baseManager = baseManagerVal;
+        this.hittingCounter = 0;
         window.addEventListener("click", (event) => 
             {this.clickHandler(event.clientX, event.clientY)});
     }
@@ -63,11 +65,17 @@ class Pitcher extends Fielder
                 if(!runnerArray[i].onBase)
                 {
                     hitting = false;
+                    this.hittingCounter = 0;
                     return;
                 }
             }
-            hitting = true;
-            this.holdingBall = false;
+            this.hittingCounter++;
+            if(this.hittingCounter == 150)
+            {
+                hitting = true;
+                this.holdingBall = false;
+                this.hittingCounter = 0;
+            }
         }
     }
 }

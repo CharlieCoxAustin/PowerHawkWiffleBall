@@ -16,7 +16,7 @@ class HittingScreen
         this.picture = new Image();
         this.picture.src = pictureVal;
         this.theBall = theBallVal;
-        window.addEventListener('click', this.hit.bind(this));
+        //window.addEventListener('click', this.hit.bind(this));
     }
 
     draw()

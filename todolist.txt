@@ -1,16 +1,16 @@
 Baseball game to do list:
 
-fix force-out issue (current): COMPLETE
+fix force-out issue (current): [COMPLETE]
 	runner who just got to first gets called out if there is a runner headed to 2nd.
 
-second baseman doesn't always run to second base: COMPLETE
+second baseman doesn't always run to second base: [COMPLETE]
 	sometimes he just sits there and waits.
 
-create a screen for pitching/hitting, have that send ball data to fielding view. COMPLETE
+create a screen for pitching/hitting, have that send ball data to fielding view. [COMPLETE]
 
-make a function that resets all the players in the field to their original locations.
+make a function that resets all the players in the field to their original locations. [COMPLETE]
 
-find a way to make the runners all run whenever the screen changes from hitting to fielding.
+find a way to make the runners all run whenever the screen changes from hitting to fielding. [MOSTLY COMPLETE.] //first base runner still doesn't run.
 
 Add pitching/hitting assets
 

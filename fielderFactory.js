@@ -67,5 +67,13 @@ class FielderFactory
             this.fielderArray[i].runToBase();
         }
     }
+
+    backToOne()
+    {
+        for(let i = 0; i < this.fielderArray.length; ++i)
+        {
+            this.fielderArray[i].backToOne();
+        }
+    }
     
 }

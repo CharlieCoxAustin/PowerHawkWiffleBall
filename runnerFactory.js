@@ -67,4 +67,20 @@ class RunnerFactory
             }
         }
     }
+
+    reset()
+    {
+        for(let i = 0; i < this.runnerArray.length; ++i)
+        {
+            this.runnerArray[i].reset(false);
+        }
+    }
+
+    runOnStart()
+    {
+        for(let i = 0; i < this.runnerArray.length; ++i)
+        {
+            this.runnerArray[i].runOnStart(false);
+        }
+    }
 }
